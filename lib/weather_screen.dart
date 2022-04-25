@@ -32,7 +32,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     case Weather.cloudy:
                       return Icon(Icons.wb_cloudy, size: 100);
                     case Weather.rainy:
-                      return Icon(Icons.wb_cloudy, size: 100);
+                      return Icon(Icons.umbrella, size: 100);
                     default:
                       return Icon(Icons.wb_sunny, size: 100);
                   }
@@ -47,22 +47,30 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 );
               },
             ),
-            // Text(
-            //   '22',
-            //   style: TextStyle(fontSize: 50, color: Colors.black),
-            // ),
+            Text(
+              '22',
+              style: TextStyle(fontSize: 50, color: Colors.black),
+            ),
             const Text(
               'Bulgan',
               style: TextStyle(fontSize: 50, color: Colors.black),
             ),
             // SizedBox(height: 40),
             Spacer(),
-            ElevatedButton(
-              onPressed: () {
-                manager.updateWeather();
-              },
-              child: Text('update'),
-            ),
+            ValueListenableBuilder<bool>(
+                valueListenable: manager.isLoadingNotifier,
+                builder: (context, isLoading, child) {
+                  if (isLoading) {
+                    return CircularProgressIndicator();
+                  } else {
+                    return ElevatedButton(
+                      onPressed: () {
+                        manager.updateWeather();
+                      },
+                      child: Text('update'),
+                    );
+                  }
+                }),
             SizedBox(height: 20),
           ],
         ),
